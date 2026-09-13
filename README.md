@@ -325,7 +325,7 @@ Você pode obter diretamente no [site oficial da Oracle](https://www.oracle.com/
 
 ```bash
 mkdir -p oracle_database/sfw/
-mv ~/Downloads/LINUX.X64_2326100_db_home.zip ~/ol10-kvm-oracle26ai-flyway/oracle_database/sfw/V1054592-01.zip
+cp ~/Downloads/LINUX.X64_2326100_db_home.zip ~/ol10-kvm-oracle26ai-flyway/oracle_database/sfw/V1054592-01.zip
 ```
 
 ### 6. Inicializar e aplicar
