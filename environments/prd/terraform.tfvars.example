@@ -30,10 +30,6 @@ ssh_public_key_path  = "/root/.ssh/ol8-kvm-terraform.pub"
 # Oracle Database 26ai - Credenciais e parâmetros
 # ============================================================
 oracle_password_hash = "$6$xyz789..."
-sys_password        = "$6$xyz789..."
-system_password     = "$6$xyz789..."
-pdbadmin_password   = "$6$xyz789..."
-dbsnmp_password     = "$6$xyz789..."
 db_sid              = "appscdb"
 pdb_name            = "appspdb1"
 oracle_home_version = "23.26.1"
