@@ -296,9 +296,7 @@ ssh-keygen -t ed25519 -f .ssh/ol8-kvm-terraform -N "" -C "terraform-ol8-kvm"
 ### 4. Configurar variáveis
 
 ```bash
-cp terraform.tfvars.example terraform.tfvars
-# ou
-cp environments/dev/terraform.tfvars.example environments/dev/terraform.tfvars
+cp environments/dev/terraform.tfvars.example terraform.tfvars
 ```
 
 **Gerar hash de senha:**
