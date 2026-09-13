@@ -63,47 +63,62 @@ Tudo isso controlado pelo Terraform, de forma **reprodutível**, **configurável
 
 ```plaintext
 ol10-kvm-oracle26ai-flyway/
-├── README.md
-├── LICENSE
+├── data
+│   ├── kickstart
+│   │   └── .gitkeep
+│   ├── logs
+│   │   ├── install-ol8-prd.log
+│   │   └── start-ol8-prd.log
+│   ├── oracle
+│   │   ├── 01-preinstall.sh
+│   │   ├── 02-copy-software.sh
+│   │   ├── 03-install-software.sh
+│   │   ├── 04-create-database.sh
+│   │   ├── response
+│   │   │   ├── dbca.rsp.tpl
+│   │   │   ├── db_install.rsp.tpl
+│   │   │   └── netca.rsp.tpl
+│   │   └── scripts
+│   │       ├── setEnv.sh.tpl
+│   │       ├── start_all.sh
+│   │       └── stop_all.sh
+│   └── scripts
+│       └── generate-hash.sh
+├── docs
+│   ├── architecture.md
+│   └── troubleshooting.md
+├── environments
+│   ├── dev
+│   │   └── terraform.tfvars.example
+│   ├── hom
+│   │   └── terraform.tfvars.example
+│   └── prd
+│       └── terraform.tfvars.example
 ├── .gitignore
-├── terraform.tfvars.example
-├── versions.tf
-├── providers.tf
-├── variables.tf
+├── images
+│   └── 0001.png
 ├── locals.tf
 ├── main.tf
+├── modules
+│   └── vm
+│       ├── locals.tf
+│       ├── main.tf
+│       ├── outputs.tf
+│       ├── templates
+│       │   └── ks.cfg.tpl
+│       └── variables.tf
+├── oracle_database
+│   └── sfw
+│       └── V1054592-01.zip
 ├── outputs.tf
-├── modules/
-│   └── vm/
-│       ├── variables.tf
-│       ├── locals.tf
-│       ├── main.tf
-│       ├── outputs.tf
-│       └── templates/
-│           └── ks.cfg.tpl
-├── data/
-│   ├── kickstart/                  # Kickstarts gerados
-│   ├── oracle/                     # RPM, scripts de instalação Oracle + Flyway
-│   │   ├── 01-preinstall.sh
-│   │   ├── 02-install-rpm.sh
-│   │   ├── 03-create-database.sh
-│   │   ├── 04-install-flyway.sh
-│   │   ├── 05-flyway-hr.sh
-│   │   └── ...
-│   ├── flyway/                     # Migrations e configuração Flyway
-│   │   └── sql/
-│   │       ├── V1__create_hr_schema.sql
-│   │       └── V2__populate_hr.sql
-│   └── scripts/
-│       └── generate-hash.sh
-├── environments/
-│   ├── dev/
-│   ├── hom/
-│   └── prd/
-├── docs/
-│   ├── architecture.md
-│   └── troubleshooting.md
-└── images/
+├── providers.tf
+├── README.md
+├── .ssh
+│   ├── ol8-kvm-terraform
+│   └── ol8-kvm-terraform.pub
+├── terraform.tfvars
+├── variables.tf
+└── versions.tf
 ```
 
 ## ⚙️ Tecnologias Utilizadas
@@ -266,12 +281,19 @@ git clone https://github.com/danilo01arrudal/ol10-kvm-oracle26ai-flyway.git
 cd ol10-kvm-oracle26ai-flyway
 ```
 
-### 2. Preparar artefatos
+### 2. Criar chave SSH
+
+```bash
+mkdir -p .ssh
+ssh-keygen -t ed25519 -f .ssh/ol8-kvm-terraform -N "" -C "terraform-ol8-kvm"
+```
+
+### 3. Preparar artefatos
 
 - Coloque o RPM do Oracle Database 26ai EE em `data/oracle/`
 - (Opcional) Coloque o zip do Flyway ou deixe o script baixar automaticamente
 
-### 3. Configurar variáveis
+### 4. Configurar variáveis
 
 ```bash
 cp terraform.tfvars.example terraform.tfvars
@@ -298,7 +320,7 @@ Edite pelo menos:
 openssl passwd -6 "SuaSenhaForte123"
 ```
 
-### 4. Inicializar e aplicar
+### 5. Inicializar e aplicar
 
 ```bash
 terraform init
@@ -308,7 +330,7 @@ terraform apply
 
 O processo completo (criação da VM + instalação do SO + Oracle + Flyway + schema HR) pode levar de **25 a 50 minutos**, dependendo do hardware e da velocidade de download.
 
-### 5. Acompanhar a instalação
+### 6. Acompanhar a instalação
 
 ```bash
 # Console da VM
@@ -318,7 +340,7 @@ virsh console <nome_da_vm>
 ssh admin@<IP> "sudo tail -f /var/log/oracle-install/*.log"
 ```
 
-### 6. Verificar o resultado
+### 7. Verificar o resultado
 
 Após o `terraform apply` concluir com sucesso:
 
@@ -341,7 +363,7 @@ Flyway:
 /opt/flyway/flyway info
 ```
 
-### 7. Destruir o ambiente
+### 8. Destruir o ambiente
 
 ```bash
 terraform destroy
@@ -384,3 +406,4 @@ Cada ambiente possui seu próprio `terraform.tfvars`.
 
 **Autor:** Danilo Arruda  
 **Licença:** MIT (ou a que estiver definida no repositório)
+

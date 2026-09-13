@@ -13,6 +13,9 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+# SSH
+.ssh/
+
 # Generated files
 data/kickstart/*.cfg
 !data/kickstart/.gitkeep
@@ -26,3 +29,6 @@ Thumbs.db
 
 # Backup
 *.tfstate.backup
+
+# Oracle Software
+oracle_database/sfw/*
