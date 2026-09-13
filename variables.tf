@@ -34,6 +34,7 @@ variable "vm_config" {
 variable "ssh_public_key" {
   description = "Chave pública SSH injetada no usuário da VM via kickstart"
   type        = string
+  default     = null
 }
 
 variable "ssh_private_key_path" {
