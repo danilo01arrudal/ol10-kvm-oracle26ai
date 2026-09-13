@@ -333,12 +333,13 @@ mv ~/Downloads/LINUX.X64_2326100_db_home.zip ~/ol10-kvm-oracle26ai-flyway/oracle
 ### 6. Inicializar e aplicar
 
 Por se tratar de um ambiente com banco de dados Oracle e necessario repassar ao terraform o valor de senha de alguns usuarios do banco de dados, o export evita que isso fique armazenado em arquivos.
+[*A regra padrão exige no mínimo 8 caracteres (com 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial como _, # ou $)*]
 
 ```bash
-export TF_VAR_sys_password="SuaSenhaSecreta123!" [*A regra padrão exige no mínimo 8 caracteres (com 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial como _, # ou $)*]
-export TF_VAR_system_password="SuaSenhaSecreta123!" [*A regra padrão exige no mínimo 8 caracteres (com 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial como _, # ou $)*]
-export TF_VAR_pdbadmin_password="SuaSenhaSecreta123!" [*A regra padrão exige no mínimo 8 caracteres (com 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial como _, # ou $)*]
-export TF_VAR_dbsnmp_password="SuaSenhaSecreta123!" [*A regra padrão exige no mínimo 8 caracteres (com 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial como _, # ou $)*]
+export TF_VAR_sys_password="SuaSenhaSecreta123!"
+export TF_VAR_system_password="SuaSenhaSecreta123!"
+export TF_VAR_pdbadmin_password="SuaSenhaSecreta123!"
+export TF_VAR_dbsnmp_password="SuaSenhaSecreta123!"
 ```
 Apos isso e possivel iniciar, validar e aplicar !
 
