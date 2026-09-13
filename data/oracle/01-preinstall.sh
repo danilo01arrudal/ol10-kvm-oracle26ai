@@ -31,7 +31,7 @@ if [ -z "${ORACLE_OS_PASSWORD:-}" ]; then
 fi
 
 echo ">>> Definindo senha do usuário oracle..."
-echo "oracle:${ORACLE_OS_PASSWORD}" | chpasswd
+usermod -p "${ORACLE_OS_PASSWORD_HASH}" oracle
 
 # --------------------------------------------------
 # 4. Firewall
