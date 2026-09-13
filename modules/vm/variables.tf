@@ -107,7 +107,7 @@ variable "ssh_private_key_path" {
 # Oracle Database 26ai
 # ============================================================
 
-variable "oracle_password" {
+variable "oracle_password_hash" {
   description = "Senha do usuário sistema operacional oracle"
   type        = string
   sensitive   = true
