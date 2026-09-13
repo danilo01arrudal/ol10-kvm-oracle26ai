@@ -301,24 +301,30 @@ cp terraform.tfvars.example terraform.tfvars
 cp environments/dev/terraform.tfvars.example environments/dev/terraform.tfvars
 ```
 
-Edite pelo menos:
-
-- `vm_config.name`
-- `vm_config.ip`
-- `vm_config.iso_path`
-- `vm_config.disk_path`
-- `vm_config.memory` / `vcpus` / `disk_size_gb`
-- `root_password_hash` e `user_password_hash`
-- `db_password` (SYS/SYSTEM)
-- `hr_password` (usuário HR)
-
 **Gerar hash de senha:**
 
 ```bash
+chmod +x ./data/scripts/generate-hash.sh
 ./data/scripts/generate-hash.sh "SuaSenhaForte123"
 # ou
 openssl passwd -6 "SuaSenhaForte123"
 ```
+
+No arquivo `terraform.tfvars`, defina :
+
+- `vm_name`: nome desejado para a VM.
+- `ip`: endereço IP estático que a VM terá.
+- `iso_path`: caminho completo para a ISO de instalação.
+- `disk_path`: caminho onde o disco da VM será criado.
+- `root_password_hash` : senha do usuario root obtida via comando **generate-hash.sh**
+- `user_password_hash` : senha do usuario root obtida via comando **generate-hash.sh**
+
+- `oracle_password_hash` : senha do usuario oracle obtida via comando **generate-hash.sh**
+- `sys_password`: senha usuario SYS no banco de dados [*A regra padrão exige no mínimo 8 caracteres (com **1 maiúscula, 1 minúscula, 1 número e 1 caractere especial como _, # ou $)*]
+- `system_password`: senha usuario SYSTEM no banco de dados [*A regra padrão exige no mínimo 8 caracteres (com **1 maiúscula, 1 minúscula, 1 número e 1 caractere especial como _, # ou $)*]
+- `pdbadmin_password`: senha usuario PDBADMIN no banco de dados [*A regra padrão exige no mínimo 8 caracteres (com **1 maiúscula, 1 minúscula, 1 número e 1 caractere especial como _, # ou $)*]
+- `dbsnmp_password`: senha usuario DBSNMP no banco de dados [*A regra padrão exige no mínimo 8 caracteres (com **1 maiúscula, 1 minúscula, 1 número e 1 caractere especial como _, # ou $)*]
+
 
 ### 5. Fazer o Download do Oracle Database 26ai 
 Baixe o software do Oracle Database 23.26.01 e coloque‑a em um diretório **oracle_database/sfw/** com o seguinte nome : **V1054592-01.zip**.
