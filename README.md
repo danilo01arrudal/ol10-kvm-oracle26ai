@@ -321,7 +321,8 @@ openssl passwd -6 "SuaSenhaForte123"
 ```
 
 ### 5. Fazer o Download do Oracle Database 26ai 
-Baixe o software do Oracle Database 23.26.01 e coloque‑a em um diretório **oracle_database/sfw/** com o seguinte nome : **V1054592-01.zip** . Você pode obter a ISO no [site oficial da Oracle](https://www.oracle.com/database/technologies/oracle26ai-linux-downloads.html#license-lightbox).
+Baixe o software do Oracle Database 23.26.01 e coloque‑a em um diretório **oracle_database/sfw/** com o seguinte nome : **V1054592-01.zip**.
+Você pode obter diretamente no [site oficial da Oracle](https://www.oracle.com/database/technologies/oracle26ai-linux-downloads.html#license-lightbox).
 
 ```bash
 mkdir -p oracle_database/sfw/
