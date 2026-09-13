@@ -320,7 +320,10 @@ Edite pelo menos:
 openssl passwd -6 "SuaSenhaForte123"
 ```
 
-### 5. Inicializar e aplicar
+### 5. Fazer o Download do Oracle Database 26ai 
+Baixe o software do Oracle Database 23.26.01 e coloque‑a em um diretório oracle_database/sfw/ . Você pode obter a ISO no [site oficial da Oracle](https://www.oracle.com/database/technologies/oracle26ai-linux-downloads.html#license-lightbox).
+
+### 6. Inicializar e aplicar
 
 ```bash
 terraform init
@@ -330,7 +333,7 @@ terraform apply
 
 O processo completo (criação da VM + instalação do SO + Oracle + Flyway + schema HR) pode levar de **25 a 50 minutos**, dependendo do hardware e da velocidade de download.
 
-### 6. Acompanhar a instalação
+### 7. Acompanhar a instalação
 
 ```bash
 # Console da VM
@@ -340,7 +343,7 @@ virsh console <nome_da_vm>
 ssh admin@<IP> "sudo tail -f /var/log/oracle-install/*.log"
 ```
 
-### 7. Verificar o resultado
+### 8. Verificar o resultado
 
 Após o `terraform apply` concluir com sucesso:
 
@@ -363,7 +366,7 @@ Flyway:
 /opt/flyway/flyway info
 ```
 
-### 8. Destruir o ambiente
+### 9. Destruir o ambiente
 
 ```bash
 terraform destroy
