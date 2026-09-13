@@ -367,7 +367,7 @@ resource "null_resource" "install_oracle" {
       "chmod +x /tmp/oracle-install/bin/*.sh /tmp/oracle-install/scripts/*.sh || true",
       
       # 01-preinstall.sh (usa a senha do SO do usuário oracle se aplicável)
-      "sudo -E ORACLE_OS_PASSWORD='${var.oracle_password}' ORACLE_HOME_VERSION='${var.oracle_home_version}' ORACLE_SID='${var.db_sid}' ORACLE_HOSTNAME='${var.hostname}' bash /tmp/oracle-install/bin/01-preinstall.sh",
+      "sudo -E ORACLE_OS_PASSWORD='${var.oracle_password_hash}' ORACLE_HOME_VERSION='${var.oracle_home_version}' ORACLE_SID='${var.db_sid}' ORACLE_HOSTNAME='${var.hostname}' bash /tmp/oracle-install/bin/01-preinstall.sh",
       
       # 02-copy-software.sh
       "sudo -E ORACLE_HOME_VERSION='${var.oracle_home_version}' ORACLE_SOFTWARE_ZIP='${var.oracle_software_zip}' bash /tmp/oracle-install/bin/02-copy-software.sh",
