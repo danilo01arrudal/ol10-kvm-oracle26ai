@@ -25,7 +25,7 @@ module "vm" {
   ssh_private_key_path = var.ssh_private_key_path
 
   # Oracle Database 26ai
-  oracle_password_hash = var.oracle_password
+  oracle_password_hash = var.oracle_password_hash
   sys_password        = var.sys_password
   system_password     = var.system_password
   pdbadmin_password   = var.pdbadmin_password
