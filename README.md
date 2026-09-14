@@ -9,10 +9,10 @@
 ## Visão Geral
 
 Este projeto automatiza, de ponta a ponta, a criação de uma máquina virtual Oracle Linux 8.10 em ambiente KVM/libvirt (host Oracle Linux 10) e, após a instalação do sistema operacional, realiza:
+Este nao e o processo de instalacao para ambiente de desenvolvimento. E a criacao e instalacao do software de banco de dados oracle com configuracao para executar ambiente que pode passar por ajuste fino e executar uma carga massiva de dados.
 
-1. Criação da VM **Oracle Linux 8.10** no KVM  
-2. Instalação do **Oracle Database 26ai Enterprise Edition** (via RPM)
-3. Criação de um banco de dados (CDB + PDB)
+1. Instalação do **Oracle Database 26ai Enterprise Edition** (via RPM)
+2. Criação de um banco de dados (CDB + PDB)
 
 Tudo isso controlado pelo Terraform, de forma **reprodutível**, **configurável** e **desassistida**.
 
