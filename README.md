@@ -394,7 +394,6 @@ Cada ambiente possui seu próprio `terraform.tfvars`.
 ## Referências
 
 - [Oracle AI Database 26ai Documentation](https://docs.oracle.com/en/database/oracle/oracle-database/26/)
-- [Oracle Database Sample Schemas (HR)](https://github.com/oracle-samples/db-sample-schemas)
 - [Oracle Linux Kickstart](https://docs.oracle.com/en/operating-systems/oracle-linux/)
 
 ---
