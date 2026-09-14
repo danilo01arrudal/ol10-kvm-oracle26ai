@@ -1,10 +1,9 @@
-# Provisionamento Automatizado de VMs Oracle Linux 8.10 com Terraform em ambiente on-premisse servidor KVM Oracle Linux 10 Instalando o Oracle Database 26ai e a ferrramenta Flyway possibilitando a execucao de scripts de deploy de schema de forma automatica.
+# Provisionamento Automatizado de VMs Oracle Linux 8.10 com Terraform em ambiente on-premisse servidor KVM Oracle Linux 10 Instalando o Oracle Database 26ai enterprise edition de forma automatica.
 
-[![GitHub](https://img.shields.io/badge/Repository-danilo01arrudal/ol10--kvm--oracle26ai--flyway-blue?logo=github)](https://github.com/danilo01arrudal/ol10-kvm-oracle26ai-flyway)
+[![GitHub](https://img.shields.io/badge/Repository-danilo01arrudal/ol10--kvm--oracle26ai--blue?logo=github)](https://github.com/danilo01arrudal/ol10-kvm-oracle26ai)
 [![Terraform](https://img.shields.io/badge/Terraform-≥1.5-purple?logo=terraform)](https://www.terraform.io/)
 [![Oracle Linux](https://img.shields.io/badge/Oracle%20Linux-8.10%20%2B%2010-red?logo=oracle)](https://www.oracle.com/linux/)
 [![Oracle Database](https://img.shields.io/badge/Oracle%20Database-26ai%20EE-orange?logo=oracle)](https://www.oracle.com/database/)
-[![Flyway](https://img.shields.io/badge/Flyway-Migration-green?logo=flyway)](https://flywaydb.org/)
 [![KVM](https://img.shields.io/badge/KVM-libvirt-blue?logo=qemu)](https://www.linux-kvm.org/)
 
 ## Visão Geral
@@ -12,22 +11,20 @@
 Este projeto automatiza, de ponta a ponta, a criação de uma máquina virtual Oracle Linux 8.10 em ambiente KVM/libvirt (host Oracle Linux 10) e, após a instalação do sistema operacional, realiza:
 
 1. Criação da VM **Oracle Linux 8.10** no KVM  
-1. Instalação do **Oracle Database 26ai Enterprise Edition** (via RPM)
-2. Criação de um banco de dados (CDB + PDB)
-3. Instalação do **Flyway**
-4. Execução automática de scripts de migration (ex.: schema **HR**)
+2. Instalação do **Oracle Database 26ai Enterprise Edition** (via RPM)
+3. Criação de um banco de dados (CDB + PDB)
 
 Tudo isso controlado pelo Terraform, de forma **reprodutível**, **configurável** e **desassistida**.
 
 ### Objetivos principais
 
-- **Reprodutível**: todo o processo (OS + Database + Flyway) é descrito como código.
+- **Reprodutível**: todo o processo (OS + Database) é descrito como código.
 - **Automatizado**: instalação do SO via Kickstart + pós-instalação via scripts remotos.
 - **Modular**: lógica de VM isolada em módulo reutilizável.
-- **Extensível**: fácil adicionar novos schemas ou migrations via Flyway.
+- **Extensível**: fácil de adicionar recursos ou customizar a configuracao atual
 - **Integrável**: pode ser usado em pipelines CI/CD.
 
-<img width="1408" height="768" alt="image" src="https://github.com/danilo01arrudal/ol10-kvm-oracle26ai-flyway/blob/main/images/0001.png" />
+<img width="1408" height="768" alt="image" src="https://github.com/danilo01arrudal/ol10-kvm-oracle26ai/blob/main/images/0001.png" />
 
 ## Principais Funcionalidades
 
@@ -37,9 +34,7 @@ Tudo isso controlado pelo Terraform, de forma **reprodutível**, **configurável
 | Instalação desassistida do SO         | Kickstart gerado dinamicamente a partir de template                       |
 | Rede estática                         | IP, gateway, máscara e DNS configuráveis                                  |
 | Particionamento flexível              | LVM com volumes root e swap parametrizados                                |
-| Instalação Oracle Database 26ai EE    | Via script de criação de banco (CDB + PDB)                          |
-| Instalação e configuração do Flyway   | Download + configuração automática                                        |
-| Deploy de schema via Flyway           | Execução de migrations (exemplo: schema HR)                               |
+| Instalação Oracle Database 26ai EE    | Via script de criação de banco (CDB + PDB)                                |
 | Ciclo de vida completo                | `terraform apply` / `terraform destroy`                                   |
 | Segurança                             | Senhas com hash SHA-512 + suporte a chave SSH                             |
 | Separação por ambiente                | Diretórios `dev` / `hom` / `prd`                                          |
@@ -51,18 +46,17 @@ Tudo isso controlado pelo Terraform, de forma **reprodutível**, **configurável
    ├── Gera Kickstart
    ├── Cria VM com virt-install (instalação OL 8.10)
    ├── Aguarda reboot + SSH disponível
-   ├── Copia scripts e artefatos (RPM, Flyway, migrations)
+   ├── Copia scripts e artefatos (RPM, scripts)
    ├── Instala oracle-ai-database-preinstall-26ai + RPM 26ai EE
    ├── Cria banco de dados (CDB + PDB)
-   ├── Instala e configura Flyway
-   └── Executa flyway migrate (schema HR)
+   
 2. VM pronta para uso com Oracle Database + schema HR
 ```
 
 ## 🗂️ Estrutura do Projeto
 
 ```plaintext
-ol10-kvm-oracle26ai-flyway/
+ol10-kvm-oracle26ai/
 ├── data
 │   ├── kickstart
 │   │   └── .gitkeep
@@ -131,8 +125,6 @@ ol10-kvm-oracle26ai-flyway/
 | virt-install            | —                            | Criação da VM                                   |
 | Oracle Database         | 26ai Enterprise Edition      | Banco de dados                                  |
 | oracle-ai-database-preinstall-26ai | —                 | Pré-requisitos do Oracle                        |
-| Flyway                  | Community (última estável)   | Controle de versão de schema / migrations       |
-| Java                    | 21 (OpenJDK)                 | Runtime do Flyway                               |
 
 ## ✅ Pré-requisitos
 
@@ -277,8 +269,8 @@ Após atender a todos os requisitos, prossiga com a configuração e uso do proj
 ### 1. Clonar o repositório
 
 ```bash
-git clone https://github.com/danilo01arrudal/ol10-kvm-oracle26ai-flyway.git
-cd ol10-kvm-oracle26ai-flyway
+git clone https://github.com/danilo01arrudal/ol10-kvm-oracle26ai.git
+cd ol10-kvm-oracle26ai
 ```
 
 ### 2. Criar chave SSH
@@ -288,12 +280,7 @@ mkdir -p .ssh
 ssh-keygen -t ed25519 -f .ssh/ol8-kvm-terraform -N "" -C "terraform-ol8-kvm"
 ```
 
-### 3. Preparar artefatos
-
-- Coloque o RPM do Oracle Database 26ai EE em `data/oracle/`
-- (Opcional) Coloque o zip do Flyway ou deixe o script baixar automaticamente
-
-### 4. Configurar variáveis
+### 3. Configurar variáveis
 
 ```bash
 cp environments/dev/terraform.tfvars.example terraform.tfvars
@@ -318,17 +305,17 @@ No arquivo `terraform.tfvars`, defina :
 - `user_password_hash` : senha do usuario root obtida via comando **generate-hash.sh**
 - `oracle_password_hash` : senha do usuario oracle obtida via comando **generate-hash.sh**
 
-### 5. Fazer o Download do Oracle Database 26ai 
+### 4. Fazer o Download do Oracle Database 26ai 
 Baixe o software do Oracle Database 23.26.01 e coloque‑a em um diretório **oracle_database/sfw/** com o seguinte nome : **V1054592-01.zip**.
 
 Você pode obter diretamente no [site oficial da Oracle](https://www.oracle.com/database/technologies/oracle26ai-linux-downloads.html#license-lightbox).
 
 ```bash
 mkdir -p oracle_database/sfw/
-cp ~/Downloads/LINUX.X64_2326100_db_home.zip ~/ol10-kvm-oracle26ai-flyway/oracle_database/sfw/V1054592-01.zip
+cp ~/Downloads/LINUX.X64_2326100_db_home.zip ~/ol10-kvm-oracle26ai/oracle_database/sfw/V1054592-01.zip
 ```
 
-### 6. Inicializar e aplicar
+### 5. Inicializar e aplicar
 
 Por se tratar de um ambiente com banco de dados Oracle e necessario repassar ao terraform o valor de senha de alguns usuarios do banco de dados, o export evita que isso fique armazenado em arquivos.
 [*A regra padrão exige no mínimo 8 caracteres (com 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial como _, # ou $)*]
@@ -347,9 +334,9 @@ terraform plan
 terraform apply
 ```
 
-O processo completo (criação da VM + instalação do SO + Oracle + Flyway + schema HR) pode levar de **25 a 50 minutos**, dependendo do hardware e da velocidade de download.
+O processo completo (criação da VM + instalação do SO + Oracle) pode levar de **25 a 50 minutos**, dependendo do hardware e da velocidade de download.
 
-### 7. Acompanhar a instalação
+### 6. Acompanhar a instalação
 
 ```bash
 # Console da VM
@@ -359,7 +346,7 @@ virsh console <nome_da_vm>
 ssh admin@<IP> "sudo tail -f /var/log/oracle-install/*.log"
 ```
 
-### 8. Verificar o resultado
+### 7. Verificar o resultado
 
 Após o `terraform apply` concluir com sucesso:
 
@@ -372,17 +359,8 @@ sqlplus / as sysdba
 
 # Verificar PDB e schema HR
 SHOW PDBS;
-ALTER SESSION SET CONTAINER = ORCLPDB1;
-SELECT username FROM dba_users WHERE username = 'HR';
-```
 
-Flyway:
-
-```bash
-/opt/flyway/flyway info
-```
-
-### 9. Destruir o ambiente
+### 8. Destruir o ambiente
 
 ```bash
 terraform destroy
@@ -404,7 +382,6 @@ Cada ambiente possui seu próprio `terraform.tfvars`.
 
 ## 🔧 Personalização
 
-- **Schema adicional**: adicione novas migrations em `data/flyway/sql/`
 - **Parâmetros do banco**: edite o script `03-create-database.sh` (SID, PDB, character set, memória, etc.)
 - **Particionamento**: ajuste o template `ks.cfg.tpl`
 - **Recursos da VM**: altere `memory`, `vcpus` e `disk_size_gb` no `terraform.tfvars`
@@ -418,7 +395,6 @@ Cada ambiente possui seu próprio `terraform.tfvars`.
 
 - [Oracle AI Database 26ai Documentation](https://docs.oracle.com/en/database/oracle/oracle-database/26/)
 - [Oracle Database Sample Schemas (HR)](https://github.com/oracle-samples/db-sample-schemas)
-- [Flyway Documentation](https://documentation.red-gate.com/flyway)
 - [Oracle Linux Kickstart](https://docs.oracle.com/en/operating-systems/oracle-linux/)
 
 ---
